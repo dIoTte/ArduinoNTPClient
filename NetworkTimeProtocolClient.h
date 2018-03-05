@@ -10,18 +10,18 @@
 class NetworkTimeProtocolClient {
 private:
 	UDP* _UDP;
-	static const uint8_t _remotePort = 123;		// Remote port to send NTP Request packet
+	static const uint8_t _serverPort = 123;		// Remote port to send NTP Request packet
 	static const uint16_t _localPort = 2390;	// Local port to listen for NTP Response packet
 	static const char* const _ntpServers[]; 	// Reliable virtual clusters providing time servers geographically close via round robin DNS
 	uint8_t _packetBuffer[NTP_PACKET_SIZE];		// Buffer to hold incoming and outgoing packets
-	uint8_t sendRequestNTPPacket(IPAddress& destinationIP);
-	uint32_t readResponseNTPPacket(IPAddress& destinationIP);
+	void sendRequestNTPPacket(IPAddress& serverIP);
+	uint32_t readResponseNTPPacket(IPAddress& serverIP);
 
 public:
 	NetworkTimeProtocolClient(UDP* aUDPInstance);
 	~NetworkTimeProtocolClient();
-	uint32_t getCurrentNTPTime();
-	uint32_t getCurrentEpochTime();
+	uint32_t getCurrentNTPTime();		// NTP uses an epoch of January 1, 1900 
+	uint32_t getCurrentUnixEpochTime(); // Unix uses an epoch of January 1, 1970 
 };
 
 #endif /* NETWORKTIMEPROTOCOLCLIENT_H_ */
